@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>TimeSheet</title>
+    <style>
+      body {
+        background-color: BlanchedAlmond;
+      }
+      .outsideBorder {
+        background-color: white;
+        border: 1pt solid Burlywood;
+        width: min-content;
+        padding: 3rem;
+      }
+      table {
+        margin-left: 1rem;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
+        margin: 0;
+      }
+      td {
+        border: 1pt solid;
+      }
+      .inputCell {
+        width: 3.5rem;
+      }
+      p {
+        font-size: 11pt;
+        font-family: "Calibri", sans-serif;
+        vertical-align: bottom;
+        padding: 1rem 0.3rem 0.3rem 0.3rem;
+        margin: 0;
+      }
+      .boldCentered {
+        font-weight: bold;
+        text-align: center;
+      }
+      .warning {
+        color: red;
+        font-size: 8pt;
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <h2>Sunday's date</h2>
+      <div>
+        <input
+          type="date"
+          id="initialDate"
+          onChange="setDate(this.valueAsNumber + (new Date()).getTimezoneOffset() * 60 * 1000)"
+          ;
+        />
+      </div>
+      <div id="warningHidden" hidden="true" class="warning">
+        The date you have selected, <b><span id="warningDate"></span></b> is
+        <i>not</i>
+        a Sunday. This time sheet is invalid.
+      </div>
+    </div>
+    <div>
+      <h2>Hours per day</h2>
+      <div id="hoursInput" />
+    </div>
+
+    <div>
+      <h2>Time Sheet</h2>
+      <div class="outsideBorder">
+        <table cellspacing="0">
+          <tbody>
+            <tr>
+              <td style="min-width: 9em; max-width: 9em">
+                <p>Day of the Week</p>
+                <p>&nbsp;</p>
+                <p class="basic">Date</p>
+              </td>
+              <td
+                style="min-width: 9em; max-width: 9em"
+                class="basic"
+                valign="bottom"
+                id="totalHoursLabelTd"
+              >
+                <p style="text-align: center" align="center">
+                  <span>Total Hours for the week</span>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td class="basic">
+                <p>Hours worked</p>
+              </td>
+              <td id="totalHoursValueTd">
+                <p id="total" class="boldCentered">0</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      var WEEK = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+
+      function updateTotal() {
+        const totalElement = document.getElementById("total");
+        const dayValues = document.getElementsByName("dayValue");
+        const total = Array.from(dayValues).reduce((prev, cur) => {
+          return prev + parseInt(cur.innerText, 10);
+        }, 0);
+        totalElement.innerText = total;
+      }
+
+      function updateSingleValue(day, value) {
+        document.getElementById(`${day}Value`).innerHTML = value;
+        updateTotal();
+      }
+
+      function populateInputRow(nodeToAppend, day) {
+        const label = document.createElement("label");
+        label.style.marginRight = "1.5em";
+        label.innerHTML = `${day}: `;
+        const input = document.createElement("input");
+        input.type = "number";
+        input.addEventListener(
+          "change",
+          function () {
+            updateSingleValue(day, this.value);
+          },
+          true
+        );
+        input.addEventListener(
+          "focus",
+          function () {
+            this.value = "";
+          },
+          true
+        );
+        input.classList.add("inputCell");
+        input.max = 24;
+        input.min = 0;
+        input.value = ["Saturday", "Sunday"].includes(day) ? 0 : 8;
+        label.append(input);
+        nodeToAppend.append(label);
+      }
+
+      function populateHourLabelRow(nodeWhereToInsert, day) {
+        const tdTop = document.createElement("td");
+        tdTop.classList.add("basic", "boldCentered");
+        tdTop.style.minWidth = "7em";
+        const p1 = document.createElement("p");
+        p1.innerHTML = day;
+        tdTop.append(p1);
+        const p2 = document.createElement("p");
+        p2.innerHTML = "&nbsp;";
+        tdTop.append(p2);
+        const p3 = document.createElement("p");
+        p3.setAttribute("id", `${day}Date`);
+        p3.innerHTML = "MM/DD";
+        tdTop.append(p3);
+        nodeWhereToInsert.insertAdjacentElement("beforebegin", tdTop);
+      }
+
+      function populateHourValueRow(nodeWhereToInsert, day) {
+        const td = document.createElement("td");
+        const p = document.createElement("p");
+        p.setAttribute("id", `${day}Value`);
+        p.setAttribute("name", "dayValue");
+        p.classList.add("boldCentered");
+        p.innerHTML = ["Saturday", "Sunday"].includes(day) ? 0 : 8;
+        td.append(p);
+        nodeWhereToInsert.insertAdjacentElement("beforebegin", td);
+      }
+
+      function populateRows() {
+        const hoursInput = document.getElementById("hoursInput");
+        const totalHourLabelTd = document.getElementById("totalHoursLabelTd");
+        const totalHourValueTd = document.getElementById("totalHoursValueTd");
+        WEEK.map((day) => {
+          populateInputRow(hoursInput, day);
+          populateHourLabelRow(totalHourLabelTd, day);
+          populateHourValueRow(totalHourValueTd, day);
+        });
+      }
+
+      function showWarning(seconds) {
+        const date = new Date(seconds);
+        const warningHidden = document.getElementById("warningHidden");
+        const warningDate = document.getElementById("warningDate");
+        if (date.getDay() === 0) {
+          warningHidden.hidden = true;
+          warningDate.innerHTML = "";
+        } else {
+          warningHidden.hidden = false;
+          warningDate.innerHTML = date;
+        }
+      }
+
+      function setDate(seconds) {
+        showWarning(seconds);
+        WEEK.map((day, idx) => {
+          const date = new Date(seconds + idx * 24 * 3600 * 1000);
+          const month = date.getMonth() + 1;
+          const dayNumber = date.getDate();
+          document.getElementById(
+            `${day}Date`
+          ).innerHTML = `${month}/${dayNumber}`;
+        });
+      }
+
+      function initDate() {
+        let currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - (currentDate.getDay() % 7));
+        document.getElementById("initialDate").valueAsDate = currentDate;
+        setDate(currentDate.valueOf());
+      }
+
+      populateRows();
+      updateTotal();
+      initDate();
+    </script>
+  </body>
+</html>

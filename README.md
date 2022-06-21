@@ -15,4 +15,4 @@ Then:
 - select the table and copy
 - paste in an html email
 
-_note_: There is a bug in Firefox, copy/paste of rich text does not copy the styling. Use Chromium for now.
+_note_: There is a bug in Firefox (see bugzilla [#1772785](https://bugzilla.mozilla.org/show_bug.cgi?id=1772785) and [#1646515](https://bugzilla.mozilla.org/show_bug.cgi?id=1646515)), copy/paste of rich text does not copy the styling. Use Chromium for now.

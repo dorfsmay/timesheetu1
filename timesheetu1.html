@@ -221,7 +221,10 @@
 
       function initDate() {
         let currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() - (currentDate.getDay() % 7));
+        // We want the last week that has been completed, so the latest sunday minus one week
+        currentDate.setDate(
+          currentDate.getDate() - (currentDate.getDay() % 7) - 7
+        );
         document.getElementById("initialDate").valueAsDate = currentDate;
         setDate(currentDate.valueOf());
       }

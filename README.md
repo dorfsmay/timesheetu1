@@ -1,5 +1,5 @@
 ## Purpose and history
-Originally created for a customer who required a weekly time sheet in html format via email in a very specific format, for approval puposes. This one single html-css-js page allows to fill the form in a few click, none on a typical week, rather than waste time editing a complicated template.
+Originally created for a customer's specific reporting requirements, the html, css and javascript content are all contained within a single html file. It defaults to the previous week (Sunday based) and a typical 40 hour. The resulting timesheet is updated automatically when the date and duration fileds are changed.
 
 ## Usage
 Either:

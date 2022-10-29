@@ -3,7 +3,8 @@ Originally created for a customer's specific reporting requirements, the html, c
 
 ## Usage
 Either:
-- Load [the html file on htmlpreview.github.io](https://htmlpreview.github.io/?https://github.com/dorfsmay/timesheetu1/blob/main/timesheetu1.html) in your browser
+- Load https://yves.zioup.com/timesheetu1 in your browser
+- alternatively, use [the html file on htmlpreview.github.io](https://htmlpreview.github.io/?https://github.com/dorfsmay/timesheetu1/blob/main/timesheetu1.html)
 
 Or:
 - download [timesheetu1.html](timesheetu1.html)

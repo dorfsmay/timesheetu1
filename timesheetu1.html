@@ -110,7 +110,7 @@
       >
       and
       <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1646515">#1646515</a
-      >, copy/paste of rich text does not copy the styling. Use Chromium for
+      >) copy/paste of rich text does not copy the styling. Use Chromium for
       now.
     </div>
 
@@ -140,7 +140,7 @@
         const totalElement = document.getElementById("total");
         const dayValues = document.getElementsByName("dayValue");
         const total = Array.from(dayValues).reduce((prev, cur) => {
-          return prev + parseInt(cur.innerText, 10);
+          return prev + parseFloat(cur.innerText, 10);
         }, 0);
         totalElement.innerText = total;
       }

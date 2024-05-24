@@ -1,5 +1,5 @@
 ## Purpose and history
-Originally created for a customer's specific reporting requirements, the html, css and javascript content are all contained within a single html file. It defaults to the previous week (Sunday based) and a typical 40 hour. The resulting timesheet is updated automatically when the date and duration fileds are changed.
+Originally created for a customer's specific reporting requirements, the html, css and javascript content are all contained within a single html file. It defaults to the previous week (Sunday based) and a typical 40 hour. The resulting timesheet is updated automatically when the date and duration fields are changed.
 
 ## Usage
 Either:
